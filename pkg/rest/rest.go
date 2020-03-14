@@ -16,7 +16,12 @@ func ReadJSONBody(request *http.Request, dto interface{}) (err error) {
 	if err != nil {
 		return errors.New("error")
 	}
-	defer request.Body.Close()
+	defer func() {
+		err := request.Body.Close()
+		if err != nil {
+			return
+		}
+	}()
 
 	err = json.Unmarshal(body, &dto)
 	if err != nil {
