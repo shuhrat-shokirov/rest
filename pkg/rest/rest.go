@@ -16,7 +16,7 @@ type filePath struct {
 }
 
 func ReadJSONBody(request *http.Request, dto interface{}) (err error) {
-		if request.Header.Get("Content-Type") != "application/json" {
+	if request.Header.Get("Content-Type") != "application/json" {
 		return errors.New("error")
 	}
 	body, err := ioutil.ReadAll(request.Body)
@@ -56,19 +56,10 @@ func WriteJSONBody(response http.ResponseWriter, dto interface{}) (err error) {
 func JsonFileUpload(path string) (encoded string, err error) {
 	fileStruct := make([]filePath, 0)
 
-	files, err := dirFileReader(path)
-	if err != nil {
-		return "Error while reading Path directory", err
-	}
-
-	for _, file := range files {
-		PathFile := filepath.Dir(file)
-		fileName := filepath.Base(file)
-		fileStruct = append(fileStruct, filePath{
-			Path:     PathFile,
-			FileName: fileName,
-		})
-	}
+	fileStruct = append(fileStruct, filePath{
+		Path:     "media/",
+		FileName: path,
+	})
 
 	marshal, err := json.Marshal(fileStruct)
 	if err != nil {
